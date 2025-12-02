@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import random
 
 # Connexion à MongoDB
 client = MongoClient('mongodb://localhost:27017/')
@@ -118,6 +119,45 @@ def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
     for score in top_scores:
         print(f"{score['nom_invocateur']} : {score['vagues_survecues']} vagues")
 
+def bonus_hp(team):
+    #choisir un champion encore en vie et lui attribuer un bonus de 10 hp
+    #valeur aléatoire entre 5 et 30
+    hp_win = random.randint(5, 30)
+    print(f"Un champion reçoit un bonus de {hp_win} HP!")
+    print("Choisissez un champion pour recevoir le bonus:")
+    for idx, champ in enumerate(team):
+        print(f"{idx + 1}. {champ['name']} (HP actuel: {champ['hp']})")
+    input_choice = input(f"Entrez le numéro du champion qui recevra {hp_win} hp : ")
+        #vérifier que l'entrée est un entier valide
+    try:
+        choice_int = int(input_choice)
+        if 1 <= choice_int <= len(team):
+            team[choice_int - 1]['hp'] += 10
+            print(f"{team[choice_int - 1]['name']} a maintenant {team[choice_int - 1]['hp']} HP.")
+        else:
+            print("Numéro invalide. Aucun bonus attribué.")
+    except ValueError:
+        print("Entrée invalide. Aucun bonus attribué.")
+    pass
+
+def bonus_ad(team):
+    #choisir un champion encore en vie et lui attribuer un bonus de 5 ad
+    print("Un champion reçoit un bonus de 5 AD!")
+    print("Choisissez un champion pour recevoir le bonus:")
+    for idx, champ in enumerate(team):
+        print(f"{idx + 1}. {champ['name']} (AD actuel: {champ['atk']})")
+    input_choice = input("Entrez le numéro du champion qui recevra 5 ad : ")
+        #vérifier que l'entrée est un entier valide
+    try:
+        choice_int = int(input_choice)
+        if 1 <= choice_int <= len(team):
+            team[choice_int - 1]['atk'] += 5
+            print(f"{team[choice_int - 1]['name']} a maintenant {team[choice_int - 1]['atk']} AD.")
+        else:
+            print("Numéro invalide. Aucun bonus attribué.")
+    except ValueError:
+        print("Entrée invalide. Aucun bonus attribué.")
+    pass
 
 counter_vague = 0
 
@@ -130,6 +170,8 @@ if __name__ == "__main__":
         if monstre['hp'] <= 0:
             counter_vague += 1
             print(f"Vague {counter_vague} terminée.")
+            bonus_hp(team)
+            bonus_ad(team)
 
             # nouveau monstre
             monstre = LoL.aggregate([
