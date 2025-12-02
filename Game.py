@@ -1,0 +1,167 @@
+from pymongo import MongoClient
+
+# Connexion à MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+
+# Choisir la base de données
+db = client["game_database"]
+
+# Choisir la collection
+LoL = db["game_LoL"]
+
+def print_champ(query):
+    jeux = LoL.find(query)
+    for jeu in jeux:
+        i = jeu.get('i', '<unknown>')
+        name = jeu.get('name', '<unknown>')
+        atk = jeu.get('atk', 0)
+        defense = jeu.get('def', 0)
+        hp = jeu.get('hp', 0)
+        print(f"{i} : {name}, attaque : {atk}, defense : {defense}, hp : {hp}")
+
+# afficher les documents de la collection
+def afficher_monstres():
+    query = {"type": "monstre"}
+    print_champ(query)
+
+# afficher les champions du jeu
+def afficher_champions():
+    query = {"type": "champion"}
+    print_champ(query)
+
+# attaquer les monstres avec les champions
+def attaquer_champions_to_monstre(champion, monstre):
+    print(f"{champion['name']} ⚔️  {monstre['name']}! ")
+    dmg = champion['atk'] > monstre['def']  if champion['atk'] - monstre['def'] else 0
+    monstre['hp'] -= dmg
+    if monstre['hp'] <= 0:
+        print(f"{monstre['name']} a été vaincu! 💀 ")
+    else:
+        print(f"{monstre['name']} a {monstre['hp']} HP restants.")
+
+# attaquer les champions avec les monstres
+def attaquer_monstre_to_champions(monstre, champion):
+    print(f"{monstre['name']} 🔄⚔️  {champion['name']} !")
+    dmg = monstre['atk'] > champion['def']  if monstre['atk'] - champion['def'] else 0
+    champion['hp'] -= dmg
+    if champion['hp'] <= 0:
+        print(f"{champion['name']} a été vaincu! 💀 ")
+    else:
+        print(f"{champion['name']} a {champion['hp']} HP restants.")
+
+def choisir_team():
+    print("Choisissez votre équipe de 3 champions!")
+    afficher_champions()
+    team = []
+    while len(team) < 3:
+        choix_raw = input("Entrez le n° du champion à ajouter à votre équipe: ")
+        choix_raw = choix_raw.strip()
+        # On exige un entier : l'utilisateur choisit le n° 'i' tel qu'il est dans la BDD
+        try:
+            choix_int = int(choix_raw)
+        except ValueError:
+            print("Veuillez entrer un numéro entier (le n° 'i' affiché).")
+            continue
+
+        # Recherche stricte par entier
+        champion = LoL.find_one({"i": choix_int, "type": "champion"})
+        if champion:
+            # Vérifier si déjà sélectionné (par _id si présent, sinon par 'i')
+            champ_id = champion.get('_id')
+            already = False
+            for m in team:
+                if champ_id is not None and m.get('_id') == champ_id:
+                    already = True
+                    break
+                if champ_id is None and m.get('i') == champion.get('i'):
+                    already = True
+                    break
+
+            if already:
+                # Afficher le nom du champion en cas de doublon
+                print(f"{champion.get('name', str(choix_int))} est déjà dans votre équipe. Choisissez un autre champion.")
+            else:
+                team.append(champion)
+                # Afficher le nom du champion ajouté (pas l'i)
+                print(f"{champion.get('name', str(choix_int))} ajouté à votre équipe.")
+        else:
+            print("Champion non trouvé (vérifiez le n° 'i' affiché), veuillez réessayer.")
+    print("Votre équipe est prête!")
+    #print les noms des champions choisis avec attaque, defense et hp
+    print("Votre équipe:")
+    for membre in team:
+        print(f"{membre['name']} - Attaque: {membre['atk']}, Défense: {membre['def']}, HP: {membre['hp']}")
+    return team
+
+
+counter_vague = 0
+
+if __name__ == "__main__":
+    nom = input("Entrez votre nom d'invocateur: ")
+    team = choisir_team()
+    monstre = LoL.aggregate([{"$match": {"type": "monstre"}}, {"$sample": {"size": 1}}]).next()
+
+    while True:
+        if monstre['hp'] <= 0:
+            counter_vague += 1
+            print(f"Vague {counter_vague} terminée.")
+
+            # nouveau monstre
+            monstre = LoL.aggregate([
+                {"$match": {"type": "monstre"}},
+                {"$sample": {"size": 1}}
+            ]).next()
+
+            print(f"Un monstre sauvage apparaît: {monstre['name']} (Attaque: {monstre['atk']}, Défense: {monstre['def']}, HP: {monstre['hp']})")
+
+        for champion in team:
+            if champion['hp'] > 0 and monstre['hp'] > 0:
+                attaquer_champions_to_monstre(champion, monstre)
+
+                if monstre['hp'] > 0:  # le monstre est encore en vie → il contre-attaque
+                    attaquer_monstre_to_champions(monstre, champion)
+
+        team = [champ for champ in team if champ['hp'] > 0]
+
+        if not team:
+            print("Tous vos champions ont été vaincus! Game Over.")
+            print(f"Il s'est passé {counter_vague} vagues.")
+            print("""SPECIAL DELIVERY!!
+ ┃╭╮╭╮┃
+╭┫▕▎▕▎┣╮
+╰┓┳╰╯┳┏╯
+╭┛╰━━╯┗━━━╮
+┃┃    ┏━╭╰╯╮
+┃┃    ┃┏┻━━┻┓
+╰┫ ╭╮ ┃┃ -15 LP ┃
+ ┃ ┃┃ ┃ ╰━━━━╯
+╭┛ ┃┃ ┗╮""")
+            print(r"""
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⢀⣴⣿⡶⠀⣾⣿⣿⡿⠟⠛⠁
+⠀⠀⠀⠀⠀⠀⣀⣀⣄⣀⠀⠀⠀⠀⣶⣶⣦⠀⠀⠀⠀⣼⣿⣿⡇⠀⣠⣿⣿⣿⠇⣸⣿⣿⣧⣤⠀⠀⠀
+⠀⠀⢀⣴⣾⣿⡿⠿⠿⠿⠇⠀⠀⣸⣿⣿⣿⡆⠀⠀⢰⣿⣿⣿⣷⣼⣿⣿⣿⡿⢀⣿⣿⡿⠟⠛⠁⠀⠀
+⠀⣴⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⢠⣿⣿⣹⣿⣿⣿⣿⣿⣿⡏⢻⣿⣿⢿⣿⣿⠃⣼⣿⣯⣤⣴⣶⣿⡤⠀
+⣼⣿⠏⠀⣀⣠⣤⣶⣾⣷⠄⣰⣿⣿⡿⠿⠻⣿⣯⣸⣿⡿⠀⠀⠀⠁⣾⣿⡏⢠⣿⣿⠿⠛⠋⠉⠀⠀⠀
+⣿⣿⠲⢿⣿⣿⣿⣿⡿⠋⢰⣿⣿⠋⠀⠀⠀⢻⣿⣿⣿⠇⠀⠀⠀⠀⠙⠛⠀⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀
+⠹⢿⣷⣶⣿⣿⠿⠋⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣴⣶⣦⣤⡀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⣠⡇⢰⣶⣶⣾⡿⠷⣿⣿⣿⡟⠛⣉⣿⣿⣿⠆
+⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⡎⣿⣿⣦⠀⠀⠀⢀⣤⣾⠟⢀⣿⣿⡟⣁⠀⠀⣸⣿⣿⣤⣾⣿⡿⠛⠁⠀
+⠀⠀⠀⠀⣠⣾⣿⡿⠛⠉⢿⣦⠘⣿⣿⡆⠀⢠⣾⣿⠋⠀⣼⣿⣿⣿⠿⠷⢠⣿⣿⣿⠿⢻⣿⣧⠀⠀⠀
+⠀⠀⠀⣴⣿⣿⠋⠀⠀⠀⢸⣿⣇⢹⣿⣷⣰⣿⣿⠃⠀⢠⣿⣿⢃⣀⣤⣤⣾⣿⡟⠀⠀⠀⢻⣿⣆⠀⠀
+⠀⠀⠀⣿⣿⡇⠀⠀⢀⣴⣿⣿⡟⠀⣿⣿⣿⣿⠃⠀⠀⣾⣿⣿⡿⠿⠛⢛⣿⡟⠀⠀⠀⠀⠀⠻⠿⠀⠀
+⠀⠀⠀⠹⣿⣿⣶⣾⣿⣿⣿⠟⠁⠀⠸⢿⣿⠇⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+""")
+
+            document = {
+                "nom_invocateur": nom,
+                "vagues_survecues": counter_vague
+            }
+            #afficher les trois meilleurs scores en termes de vagues_survecues
+            #top_scores = LoL.find().sort("vagues_survecues", -1).limit(3)
+            #print("Top 3 des meilleurs scores:")
+            #for score in top_scores:
+            #    print(f"{score['nom_invocateur']} : {score['vagues_survecues']} vagues")
+            break
