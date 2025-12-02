@@ -22,7 +22,7 @@ def print_champ(query):
         defense = jeu.get('def', 0)
         hp = jeu.get('hp', 0)
         crit = jeu.get('crit', 0)
-        print(f"{i} : {name}, attaque : {atk}, defense : {defense}, hp : {hp}, crit : {crit}")
+        print(f"{i} : {name}, ⚔️ : {atk}, 🛡️ : {defense}, ❤️ : {hp}, 💥 : {crit}")
 
 # afficher les documents de la collection
 def afficher_monstres():
@@ -44,7 +44,7 @@ def attaquer_champions_to_monstre(champion, monstre):
     if monstre['hp'] <= 0:
         print(f"{monstre['name']} a été vaincu! 💀 ")
     else:
-        print(f"{monstre['name']} a {monstre['hp']} HP restants.")
+        print(f"{monstre['name']} a {monstre['hp']} ❤️ restants.")
 
 # attaquer les champions avec les monstres
 def attaquer_monstre_to_champions(monstre, champion):
@@ -55,7 +55,7 @@ def attaquer_monstre_to_champions(monstre, champion):
     if champion['hp'] <= 0:
         print(f"{champion['name']} a été vaincu! 💀 ")
     else:
-        print(f"{champion['name']} a {champion['hp']} HP restants.")
+        print(f"{champion['name']} a {champion['hp']} ❤️ restants.")
 
 
 def crit_attack(attacker):
@@ -111,7 +111,7 @@ def choisir_team():
     #print les noms des champions choisis avec attaque, defense et hp
     print("Votre équipe:")
     for membre in team:
-        print(f"{membre['name']} - Attaque: {membre['atk']}, Défense: {membre['def']}, HP: {membre['hp']}")
+        print(f"{membre['name']} - ⚔️: {membre['atk']}, 🛡️: {membre['def']}, ❤️: {membre['hp']}, 💥 : {membre['crit']}")
     return team
 
 
@@ -139,6 +139,11 @@ def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
 def bonus_hp(team):
     #choisir un champion encore en vie et lui attribuer un bonus de 10 hp
     #valeur aléatoire entre 5 et 30
+    print("\n")
+    print("\n" + "="*50)
+    print("Bonus HP time !")
+    print("\n" + "="*50)
+    print("\n")
     hp_win = random.randint(5, 30)
     print(f"Un champion reçoit un bonus de {hp_win} HP!")
     print("Choisissez un champion pour recevoir le bonus:")
@@ -158,7 +163,14 @@ def bonus_hp(team):
     pass
 
 def bonus_ad(team):
+
+    print("\n")
+    print("\n" + "="*50)
+    print("Bonus ad time !")
+    print("\n" + "="*50)
+    print("\n")
     #choisir un champion encore en vie et lui attribuer un bonus de 5 ad
+
     print("Un champion reçoit un bonus de 5 AD!")
     print("Choisissez un champion pour recevoir le bonus:")
     for idx, champ in enumerate(team):
