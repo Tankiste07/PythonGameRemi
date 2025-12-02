@@ -21,7 +21,8 @@ def print_champ(query):
         atk = jeu.get('atk', 0)
         defense = jeu.get('def', 0)
         hp = jeu.get('hp', 0)
-        print(f"{i} : {name}, attaque : {atk}, defense : {defense}, hp : {hp}")
+        crit = jeu.get('crit', 0)
+        print(f"{i} : {name}, attaque : {atk}, defense : {defense}, hp : {hp}, crit : {crit}")
 
 # afficher les documents de la collection
 def afficher_monstres():
@@ -35,9 +36,11 @@ def afficher_champions():
 
 # attaquer les monstres avec les champions
 def attaquer_champions_to_monstre(champion, monstre):
-    print(f"{champion['name']} ⚔️  {monstre['name']}! ")
-    dmg = champion['atk'] > monstre['def']  if champion['atk'] - monstre['def'] else 0
+    print(f"{champion['name']} ⚔️  {monstre['name']}  {monstre['hp']}❤️! ")
+    crit_multiplier = crit_attack(champion)
+    dmg = max(0, (champion['atk'] * crit_multiplier) - monstre['def'])
     monstre['hp'] -= dmg
+    print(f"dmg infligé: {dmg}")
     if monstre['hp'] <= 0:
         print(f"{monstre['name']} a été vaincu! 💀 ")
     else:
@@ -45,13 +48,27 @@ def attaquer_champions_to_monstre(champion, monstre):
 
 # attaquer les champions avec les monstres
 def attaquer_monstre_to_champions(monstre, champion):
-    print(f"{monstre['name']} 🔄⚔️  {champion['name']} !")
-    dmg = monstre['atk'] > champion['def']  if monstre['atk'] - champion['def'] else 0
+    print(f"{monstre['name']} 🔄⚔️  {champion['name']} {champion['hp']}❤️!")
+    dmg = max(0, monstre['atk'] - champion['def'])
+    print(f"dmg infligé: {dmg}")
     champion['hp'] -= dmg
     if champion['hp'] <= 0:
         print(f"{champion['name']} a été vaincu! 💀 ")
     else:
         print(f"{champion['name']} a {champion['hp']} HP restants.")
+
+
+def crit_attack(attacker):
+    """
+    Calcule les dégâts en tenant compte des coups critiques.
+    Retourne le multiplicateur de dégâts (1 = normal, 2 = critique).
+    """
+    crit_chance = min(attacker.get('crit', 0) * 10, 100)  # Multiplier par 10 et capper à 100
+    if random.randint(1, 10) <= crit_chance:
+        print(f"Coup critique de {attacker['name']}! 💥")
+        return 2
+    else:
+        return 1
 
 def choisir_team():
     print("Choisissez votre équipe de 3 champions!")
