@@ -9,6 +9,9 @@ db = client["game_database"]
 # Choisir la collection
 LoL = db["game_LoL"]
 
+# collection score board
+score_board = db["score_board"]
+
 def print_champ(query):
     jeux = LoL.find(query)
     for jeu in jeux:
@@ -94,6 +97,28 @@ def choisir_team():
     return team
 
 
+def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
+    """
+    Enregistre le score d'un invocateur et affiche le top 3 des meilleurs scores.
+    
+    Args:
+        nom_invocateur (str): Le nom de l'invocateur
+        vagues_survecues (int): Le nombre de vagues survivies
+    """
+    # Insérer le score dans la collection
+    document = {
+        "nom_invocateur": nom_invocateur,
+        "vagues_survecues": vagues_survecues
+    }
+    score_board.insert_one(document)
+    
+    # Récupérer et afficher les 3 meilleurs scores
+    top_scores = score_board.find().sort("vagues_survecues", -1).limit(3)
+    print("Top 3 des meilleurs scores:")
+    for score in top_scores:
+        print(f"{score['nom_invocateur']} : {score['vagues_survecues']} vagues")
+
+
 counter_vague = 0
 
 if __name__ == "__main__":
@@ -126,16 +151,6 @@ if __name__ == "__main__":
         if not team:
             print("Tous vos champions ont été vaincus! Game Over.")
             print(f"Il s'est passé {counter_vague} vagues.")
-            print("""SPECIAL DELIVERY!!
- ┃╭╮╭╮┃
-╭┫▕▎▕▎┣╮
-╰┓┳╰╯┳┏╯
-╭┛╰━━╯┗━━━╮
-┃┃    ┏━╭╰╯╮
-┃┃    ┃┏┻━━┻┓
-╰┫ ╭╮ ┃┃ -15 LP ┃
- ┃ ┃┃ ┃ ╰━━━━╯
-╭┛ ┃┃ ┗╮""")
             print(r"""
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⢀⣴⣿⡶⠀⣾⣿⣿⡿⠟⠛⠁
@@ -155,13 +170,5 @@ if __name__ == "__main__":
 ⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 """)
 
-            document = {
-                "nom_invocateur": nom,
-                "vagues_survecues": counter_vague
-            }
-            #afficher les trois meilleurs scores en termes de vagues_survecues
-            #top_scores = LoL.find().sort("vagues_survecues", -1).limit(3)
-            #print("Top 3 des meilleurs scores:")
-            #for score in top_scores:
-            #    print(f"{score['nom_invocateur']} : {score['vagues_survecues']} vagues")
+            enregistrer_et_afficher_scores(nom, counter_vague)
             break
