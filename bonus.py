@@ -69,23 +69,27 @@ def bonus_ad(team):
 
 def bonus_crit(team):
 
+    if evenement_aleatoire(10) != 7:
+        return
+    
+    print_jolie()
+    print("Bonus de 0.15 💥 !")
 
-    if evenement_aleatoire(10) == 7:
-        print_jolie()
-        print("Bonus de 0.15 💥 !")
+    for i, champ in enumerate(team):
+        print(f"{i+1}. {champ['name']} ({champ['crit']}) 💥")
 
-        for i, champ in enumerate(team):
-            print(f"{i+1}. {champ['name']} ({champ['crit']}) 💥")
-
-        choix = input(" numéro : ")
-        idx = valider_choix(choix, len(team))
-        if idx is not None:
-            team[idx]['crit'] += 0.15
-            print(f" {team[idx]['name']} gagne 0.15 💥 et possède :  {team[idx]['crit']} 💥")
-        else:
-            print("Invalide.")
+    choix = input(" numéro : ")
+    idx = valider_choix(choix, len(team))
+    if idx is not None:
+        team[idx]['crit'] += 0.15
+        print(f" {team[idx]['name']} gagne 0.15 💥 et possède :  {team[idx]['crit']} 💥")
+    else:
+        print("Invalide.")
 
 def resurrect_from_dead(dead_list, team):
+    if evenement_aleatoire(3) !=1 and evenement_aleatoire(10) != 2:
+        return
+    
     if not dead_list:
         return
 
