@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 import random
 import time
+import math
 
 # Connexion à MongoDB
 client = MongoClient('mongodb://localhost:27017/')
@@ -39,7 +40,7 @@ def afficher_champions():
 def attaquer_champions_to_monstre(champion, monstre):
     print(f"{champion['name']} ⚔️  {monstre['name']}  {monstre['hp']}❤️! ")
     crit_multiplier = crit_attack(champion)
-    dmg = max(0, (champion['atk'] * crit_multiplier) - monstre['def'])
+    dmg = math.floor(max(0,champion['atk'] * crit_multiplier * 100 / (100 + monstre['def']))) #dmg avec la formule de mitigation utilisé sur LoL source : GPT
     monstre['hp'] -= dmg
     print(f"dmg infligé: {dmg}")
     time.sleep(1)
@@ -52,7 +53,7 @@ def attaquer_champions_to_monstre(champion, monstre):
 # attaquer les champions avec les monstres
 def attaquer_monstre_to_champions(monstre, champion):
     print(f"{monstre['name']} 🔄⚔️  {champion['name']} {champion['hp']}❤️!")
-    dmg = max(0, monstre['atk'] - champion['def'])
+    dmg = math.floor(max(0, monstre['atk'] * 100 / (100 + champion['def'])))
     print(f"dmg infligé: {dmg}")
     champion['hp'] -= dmg
     time.sleep(1)
@@ -116,6 +117,16 @@ def choisir_team():
         print(f"{membre['name']} - ⚔️: {membre['atk']}, 🛡️: {membre['def']}, ❤️: {membre['hp']}, 💥 : {membre['crit']}")
     return team
 
+def info_status(team, monstre):
+        print("\n" + "="*50)
+    print("\n--- Statut de l'équipe ---")
+    for champ in team:
+        print(f"{champ['name']}: {champ['hp']} ❤️")
+    print("\n" + "="*50)
+    print("\n" + "="*50)
+    print("\n--- statut du monstre ---")
+    print(f"{monstre['name']}: {monstre['hp']} ❤️")
+    print("\n" + "="*50)
 
 def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
 
@@ -231,7 +242,7 @@ if __name__ == "__main__":
 
                 if monstre['hp'] > 0:  # le monstre est encore en vie → il contre-attaque
                     attaquer_monstre_to_champions(monstre, champion)
-
+        info_status(team, monstre)
         team = [champ for champ in team if champ['hp'] > 0]
 
         if not team:
