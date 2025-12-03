@@ -1,7 +1,7 @@
 from db import LoL
 from models import choisir_team
 from combat import *
-from bonus import bonus_hp, bonus_ad, bonus_armor, bonus_crit
+from bonus import bonus_hp, bonus_ad, bonus_armor, bonus_crit, resurrect_from_dead
 from score import enregistrer_et_afficher_scores
 
 counter_vague = 0
@@ -9,6 +9,7 @@ counter_vague = 0
 if __name__ == "__main__":
     nom = input("Entrez votre nom d'invocateur: ")
     team = choisir_team()
+    dead_list = []
 
     monstre = LoL.aggregate([
         {"$match": {"type": "monstre"}},
@@ -20,6 +21,9 @@ if __name__ == "__main__":
             counter_vague += 1
             print(f"Vague {counter_vague} terminée.")
 
+            print("Temps pour un bonus avant la prochaine vague!")
+
+            resurrect_from_dead(dead_list, team)
             bonus_hp(team)
             bonus_ad(team)
             bonus_armor(team)
@@ -36,8 +40,16 @@ if __name__ == "__main__":
                 if monstre['hp'] > 0:
                     attaquer_monstre_to_champions(monstre, champion)
 
-        info_status(team, monstre)
-        team = [champ for champ in team if champ['hp'] > 0]
+        # Déplacer les champions morts vers dead_list afin qu'ils puissent être ressuscités
+        nouveau_mort = [champ for champ in team if champ.get('hp', 0) <= 0]
+        for d in nouveau_mort:
+            if d not in dead_list:
+                dead_list.append(d)
+
+        # garder dans `team` uniquement les champions vivants
+        team = [champ for champ in team if champ.get('hp', 0) > 0]
+
+        info_status(team, monstre, dead_list)
         
         if not team:
             print("Tous vos champions ont été vaincus!")
