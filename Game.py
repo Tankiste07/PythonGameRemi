@@ -59,10 +59,7 @@ def attaquer_monstre_to_champions(monstre, champion):
 
 
 def crit_attack(attacker):
-    """
-    Calcule les dégâts en tenant compte des coups critiques.
-    Retourne le multiplicateur de dégâts (1 = normal, 2 = critique).
-    """
+
     crit_chance = min(attacker.get('crit', 0) * 10, 100)  # Multiplier par 10 et capper à 100
     if random.randint(1, 10) <= crit_chance:
         print(f"Coup critique de {attacker['name']}! 💥")
@@ -116,13 +113,7 @@ def choisir_team():
 
 
 def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
-    """
-    Enregistre le score d'un invocateur et affiche le top 3 des meilleurs scores.
-    
-    Args:
-        nom_invocateur (str): Le nom de l'invocateur
-        vagues_survecues (int): Le nombre de vagues survivies
-    """
+
     # Insérer le score dans la collection
     document = {
         "nom_invocateur": nom_invocateur,
