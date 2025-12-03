@@ -38,6 +38,7 @@ def afficher_champions():
 
 # attaquer les monstres avec les champions
 def attaquer_champions_to_monstre(champion, monstre):
+    print("\n" + "-"*50)
     print(f"{champion['name']} ⚔️  {monstre['name']}  {monstre['hp']}❤️! ")
     crit_multiplier = crit_attack(champion)
     dmg = math.floor(max(0,champion['atk'] * crit_multiplier * 100 / (100 + monstre['def']))) #dmg avec la formule de mitigation utilisé sur LoL source : GPT
@@ -118,15 +119,15 @@ def choisir_team():
     return team
 
 def info_status(team, monstre):
-        print("\n" + "="*50)
+    print("\n" + "="*50)
     print("\n--- Statut de l'équipe ---")
     for champ in team:
         print(f"{champ['name']}: {champ['hp']} ❤️")
     print("\n" + "="*50)
-    print("\n" + "="*50)
     print("\n--- statut du monstre ---")
     print(f"{monstre['name']}: {monstre['hp']} ❤️")
     print("\n" + "="*50)
+    time.sleep(1)
 
 def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
 
@@ -240,7 +241,7 @@ if __name__ == "__main__":
                 #time.sleep(1)
                 attaquer_champions_to_monstre(champion, monstre)
 
-                if monstre['hp'] > 0:  # le monstre est encore en vie → il contre-attaque
+                if monstre['hp'] > 0:  # le monstre est encore en vie , il contre-attaque
                     attaquer_monstre_to_champions(monstre, champion)
         info_status(team, monstre)
         team = [champ for champ in team if champ['hp'] > 0]
