@@ -1,3 +1,4 @@
+"""
 from pymongo import MongoClient
 import random
 import time
@@ -269,4 +270,4 @@ if __name__ == "__main__":
 """)
 
             enregistrer_et_afficher_scores(nom, counter_vague)
-            break
+            break"""
