@@ -48,5 +48,5 @@ def choisir_team():
 
     print("Votre équipe :")
     for c in team:
-        print(f"{c['name']} ⚔️{c['atk']} 🛡️{c['def']} ❤️{c['hp']} 💥 {c['crit']}")
+        print(f"{c['name']}  ⚔️ {c['atk']}  🛡️ {c['def']} ❤️ {c['hp']}  💥  {c['crit']}")
     return team

@@ -4,10 +4,10 @@ from utils import print_jolie
 def bonus_armor(team):
     print_jolie()
     armor = random.randint(1, 4)
-    print(f"Bonus de {armor} ARMOR !")
+    print(f"Bonus de {armor} 🛡️ !")
 
     for i, champ in enumerate(team):
-        print(f"{i+1}. {champ['name']} (ARMOR {champ['def']})")
+        print(f"{i+1}. {champ['name']} ({champ['def']}) 🛡️")
 
     choix = input(" numéro : ")
     try:
@@ -23,7 +23,7 @@ def bonus_hp(team):
     print(f"Bonus de {hp} HP !")
 
     for i, champ in enumerate(team):
-        print(f"{i+1}. {champ['name']} (❤️ {champ['hp']})")
+        print(f"{i+1}. {champ['name']} ({champ['hp']}) ❤️")
 
     choix = input(" numéro : ")
     try:
@@ -38,7 +38,7 @@ def bonus_ad(team):
     print("Bonus de 5 ⚔️ !")
 
     for i, champ in enumerate(team):
-        print(f"{i+1}. {champ['name']} (⚔️ {champ['atk']})")
+        print(f"{i+1}. {champ['name']} ({champ['atk']}) ⚔️")
 
     choix = input(" numéro : ")
     try:
