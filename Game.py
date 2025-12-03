@@ -127,9 +127,31 @@ def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
     for score in top_scores:
         print(f"{score['nom_invocateur']} : {score['vagues_survecues']} vagues")
 
+def bonus_armor(team):
+    print("\n")
+    print("\n" + "="*50)
+    print("Bonus HP time !")
+    print("\n" + "="*50)
+    print("\n")
+    armor_win = random.randint(1, 4)
+    print(f"Un champion reçoit un bonus de {armor_win} ARMOR!")
+    print("Choisissez un champion pour recevoir le bonus:") 
+    for idx, champ in enumerate(team):
+        print(f"{idx + 1}. {champ['name']} (ARMOR actuel: {champ['def']})")
+    input_choice = input(f"Entrez le numéro du champion qui recevra {armor_win} armor : ")
+        #vérifier que l'entrée est un entier valide 
+    try:
+        choice_int = int(input_choice)
+        if 1 <= choice_int <= len(team):
+            team[choice_int - 1]['def'] += armor_win
+            print(f"{team[choice_int - 1]['name']} a maintenant {team[choice_int - 1]['def']} ARMOR.")
+        else:
+            print("Numéro invalide. Aucun bonus attribué.")
+    except ValueError:
+        print("Entrée invalide. Aucun bonus attribué.")
+    pass
+
 def bonus_hp(team):
-    #choisir un champion encore en vie et lui attribuer un bonus de 10 hp
-    #valeur aléatoire entre 5 et 30
     print("\n")
     print("\n" + "="*50)
     print("Bonus HP time !")
@@ -192,6 +214,7 @@ if __name__ == "__main__":
             print(f"Vague {counter_vague} terminée.")
             bonus_hp(team)
             bonus_ad(team)
+            bonus_armor(team)
 
             # nouveau monstre
             monstre = LoL.aggregate([
