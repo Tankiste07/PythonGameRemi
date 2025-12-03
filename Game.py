@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import random
+import time
 
 # Connexion à MongoDB
 client = MongoClient('mongodb://localhost:27017/')
@@ -41,10 +42,12 @@ def attaquer_champions_to_monstre(champion, monstre):
     dmg = max(0, (champion['atk'] * crit_multiplier) - monstre['def'])
     monstre['hp'] -= dmg
     print(f"dmg infligé: {dmg}")
+    time.sleep(1)
     if monstre['hp'] <= 0:
         print(f"{monstre['name']} a été vaincu! 💀 ")
     else:
         print(f"{monstre['name']} a {monstre['hp']} ❤️ restants.")
+        time.sleep(1)
 
 # attaquer les champions avec les monstres
 def attaquer_monstre_to_champions(monstre, champion):
@@ -52,10 +55,12 @@ def attaquer_monstre_to_champions(monstre, champion):
     dmg = max(0, monstre['atk'] - champion['def'])
     print(f"dmg infligé: {dmg}")
     champion['hp'] -= dmg
+    time.sleep(1)
     if champion['hp'] <= 0:
         print(f"{champion['name']} a été vaincu! 💀 ")
     else:
         print(f"{champion['name']} a {champion['hp']} ❤️ restants.")
+        time.sleep(1)
 
 
 def crit_attack(attacker):
@@ -127,12 +132,15 @@ def enregistrer_et_afficher_scores(nom_invocateur, vagues_survecues):
     for score in top_scores:
         print(f"{score['nom_invocateur']} : {score['vagues_survecues']} vagues")
 
+def print_jolie():
+    print("\n")
+    print("\n" + "="*50)
+    print("Bonus time !")
+    print("\n" + "="*50)
+    print("\n")
+
 def bonus_armor(team):
-    print("\n")
-    print("\n" + "="*50)
-    print("Bonus HP time !")
-    print("\n" + "="*50)
-    print("\n")
+    print_jolie()
     armor_win = random.randint(1, 4)
     print(f"Un champion reçoit un bonus de {armor_win} ARMOR!")
     print("Choisissez un champion pour recevoir le bonus:") 
@@ -152,11 +160,7 @@ def bonus_armor(team):
     pass
 
 def bonus_hp(team):
-    print("\n")
-    print("\n" + "="*50)
-    print("Bonus HP time !")
-    print("\n" + "="*50)
-    print("\n")
+    print_jolie()
     hp_win = random.randint(5, 30)
     print(f"Un champion reçoit un bonus de {hp_win} HP!")
     print("Choisissez un champion pour recevoir le bonus:")
@@ -177,11 +181,7 @@ def bonus_hp(team):
 
 def bonus_ad(team):
 
-    print("\n")
-    print("\n" + "="*50)
-    print("Bonus ad time !")
-    print("\n" + "="*50)
-    print("\n")
+    print_jolie()
     #choisir un champion encore en vie et lui attribuer un bonus de 5 ad
 
     print("Un champion reçoit un bonus de 5 AD!")
@@ -226,6 +226,7 @@ if __name__ == "__main__":
 
         for champion in team:
             if champion['hp'] > 0 and monstre['hp'] > 0:
+                #time.sleep(1)
                 attaquer_champions_to_monstre(champion, monstre)
 
                 if monstre['hp'] > 0:  # le monstre est encore en vie → il contre-attaque
