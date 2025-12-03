@@ -1,7 +1,7 @@
 from db import LoL
 from models import choisir_team
 from combat import *
-from bonus import bonus_hp, bonus_ad, bonus_armor
+from bonus import bonus_hp, bonus_ad, bonus_armor, bonus_crit
 from score import enregistrer_et_afficher_scores
 
 counter_vague = 0
@@ -23,6 +23,7 @@ if __name__ == "__main__":
             bonus_hp(team)
             bonus_ad(team)
             bonus_armor(team)
+            bonus_crit(team)
 
             monstre = LoL.aggregate([
                 {"$match": {"type": "monstre"}},

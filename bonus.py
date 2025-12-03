@@ -47,3 +47,21 @@ def bonus_ad(team):
         print(f" {team[choix-1]['name']} gagne 5 ⚔️ et possède :  {team[choix-1]['atk']} ⚔️")
     except:
         print("Invalide.")
+
+def bonus_crit(team):
+    print_jolie()
+    alea = random.randint(1, 10)
+    # alea = 7  # Pour tester le bonus de crit
+    if alea == 7:
+        print("Bonus de 0.15 💥 !")
+
+        for i, champ in enumerate(team):
+            print(f"{i+1}. {champ['name']} ({champ['crit']}) 💥")
+
+        choix = input(" numéro : ")
+        try:
+            choix = int(choix)
+            team[choix-1]['crit'] += 0.15
+            print(f" {team[choix-1]['name']} gagne 0.15 💥 et possède :  {team[choix-1]['crit']} 💥")
+        except:
+            print("Invalide.")
