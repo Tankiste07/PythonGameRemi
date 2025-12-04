@@ -14,11 +14,9 @@ def bonus_armor(team):
         print(f"{i+1}. {champ['name']} ({champ['def']}) 🛡️")
 
     idx = valid_choice(len(team))
-    if idx is not None:
-        team[idx]['def'] += armor
-        print(f" {team[idx]['name']} gagne {armor} 🛡️ et possède :  {team[idx]['def']} 🛡️")
-    else:
-        print("Invalide.")
+    team[idx]['def'] += armor
+    print(f" {team[idx]['name']} gagne {armor} 🛡️ et possède :  {team[idx]['def']} 🛡️")
+    print("Invalide.")
 
 def bonus_hp(team):
     print_jolie()
@@ -39,11 +37,10 @@ def bonus_hp(team):
             print(f"{i+1}. {champ['name']} ({champ['hp']}) ❤️")
 
         idx = valid_choice(len(team))
-        if idx is not None:
-            team[idx]['hp'] += hp
-            print(f" {team[idx]['name']} gagne {hp} ❤️ et possède :  {team[idx]['hp']} ❤️")
-        else:
-            print("Invalide.")
+        team[idx]['hp'] += hp
+
+        print(f" {team[idx]['name']} gagne {hp} ❤️ et possède :  {team[idx]['hp']} ❤️")
+        print("Invalide.")
 
 def bonus_ad(team):
 
@@ -56,11 +53,9 @@ def bonus_ad(team):
             print(f"{i+1}. {champ['name']} ({champ['atk']}) ⚔️")
 
         idx = valid_choice(len(team))
-        if idx is not None:
-            team[idx]['atk'] += 5
-            print(f" {team[idx]['name']} gagne 5 ⚔️ et possède :  {team[idx]['atk']} ⚔️")
-        else:
-            print("Invalide.")
+        team[idx]['atk'] += 5
+        print(f" {team[idx]['name']} gagne 5 ⚔️ et possède :  {team[idx]['atk']} ⚔️")
+        print("Invalide.")
 
 def bonus_crit(team):
 
@@ -74,11 +69,9 @@ def bonus_crit(team):
         print(f"{i+1}. {champ['name']} ({champ['crit']}) 💥")
 
     idx = valid_choice(len(team))
-    if idx is not None:
-        team[idx]['crit'] += 0.15
-        print(f" {team[idx]['name']} gagne 0.15 💥 et possède :  {team[idx]['crit']} 💥")
-    else:
-        print("Invalide.")
+    team[idx]['crit'] += 0.15
+    print(f" {team[idx]['name']} gagne 0.15 💥 et possède :  {team[idx]['crit']} 💥")
+    print("Invalide.")
 
 def resurrect_from_dead(dead_list, team):
     if random_number(3) !=1 and random_number(10) != 2:
@@ -100,3 +93,10 @@ def resurrect_from_dead(dead_list, team):
     cible['hp'] = 50
     team.append(cible)
     print(f"{cible.get('name','?')} a été ressuscité avec 50 ❤️ !")
+
+def bonus_is_comming(team):
+    bonus_ad(team)
+    bonus_hp(team)
+    bonus_ad(team)
+    bonus_crit(team)
+

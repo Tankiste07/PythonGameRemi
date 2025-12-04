@@ -1,7 +1,7 @@
 from db import LoL
 from models import choose_team
 from combat import *
-from bonus import bonus_hp, bonus_ad, bonus_armor, bonus_crit, resurrect_from_dead
+from bonus import bonus_hp, bonus_ad, bonus_armor, bonus_crit, bonus_is_comming, resurrect_from_dead
 from score import record_and_display_scores
 
 counter_wave = 0
@@ -25,10 +25,7 @@ if __name__ == "__main__":
             print("Temps pour un bonus avant la prochaine vague!")
 
             resurrect_from_dead(dead_list, team)
-            bonus_hp(team)
-            bonus_ad(team)
-            bonus_armor(team)
-            bonus_crit(team)
+            bonus_is_comming(team)
 
             monster = LoL.aggregate([
                 {"$match": {"type": "monstre"}},
