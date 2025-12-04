@@ -19,8 +19,8 @@ if __name__ == "__main__":
     while True:
         if monstre['hp'] <= 0:
             counter_vague += 1
+            
             print(f"Vague {counter_vague} terminée.")
-
             print("Temps pour un bonus avant la prochaine vague!")
 
             resurrect_from_dead(dead_list, team)

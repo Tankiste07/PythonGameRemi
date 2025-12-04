@@ -1,17 +1,18 @@
 import random
 from utils import print_jolie
-from utils import evenement_aleatoire
+from utils import nombre_aleatoire
 from utils import valider_choix
 
 def bonus_armor(team):
-    print_jolie()
+
     armor = random.randint(1, 4)
+    
+    print_jolie()
     print(f"Bonus de {armor} 🛡️ !")
 
     for i, champ in enumerate(team):
         print(f"{i+1}. {champ['name']} ({champ['def']}) 🛡️")
 
-    # choix = input(" numéro : ")
     idx = valider_choix(len(team))
     if idx is not None:
         team[idx]['def'] += armor
@@ -21,9 +22,8 @@ def bonus_armor(team):
 
 def bonus_hp(team):
     print_jolie()
-    alea = evenement_aleatoire(10)
+    alea = nombre_aleatoire(10)
 
-    #si alea est egal a 2 toute l'équipe est soignée
     if alea % 2 == 1:
         hp = random.randint(10, 50)
         print(f"Bonus de {hp} HP pour toute l'équipe !")
@@ -39,7 +39,6 @@ def bonus_hp(team):
         for i, champ in enumerate(team):
             print(f"{i+1}. {champ['name']} ({champ['hp']}) ❤️")
 
-        #choix = input(" numéro : ")
         idx = valider_choix(len(team))
         if idx is not None:
             team[idx]['hp'] += hp
@@ -67,7 +66,7 @@ def bonus_ad(team):
 
 def bonus_crit(team):
 
-    if evenement_aleatoire(10) != 7:
+    if nombre_aleatoire(10) != 7:
         return
     
     print_jolie()
@@ -85,7 +84,7 @@ def bonus_crit(team):
         print("Invalide.")
 
 def resurrect_from_dead(dead_list, team):
-    if evenement_aleatoire(3) !=1 and evenement_aleatoire(10) != 2:
+    if nombre_aleatoire(3) !=1 and nombre_aleatoire(10) != 2:
         return
     
     if not dead_list:
@@ -97,7 +96,6 @@ def resurrect_from_dead(dead_list, team):
     for i, champ in enumerate(dead_list):
         print(f"{i+1}. {champ.get('name','?')} 0 ❤️")
     
-    #choix = input(" numéro : ")
     idx = valider_choix(len(dead_list))
     if idx is not None:
         cible = dead_list.pop(idx)
