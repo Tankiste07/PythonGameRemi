@@ -17,30 +17,30 @@ def compute_damage(atk,defense):
 def compute_hp(hp, max_hp):
     return min(max(0, hp), max_hp)
 
-def attaquer_champions_to_monstre(champion, monstre):
+def attack_champions_to_monster(champion, monster):
     print("\n" + "-"*50)
-    print(f"{champion['name']} ⚔️  {monstre['name']}  {monstre['hp']}❤️! ")
+    print(f"{champion['name']} ⚔️  {monster['name']}  {monster['hp']}❤️! ")
 
     # Appliquer les dégâts et empêcher les HP négatifs
     crit = crit_attack(champion)
-    dmg = compute_damage(champion['atk']*crit, monstre['def'])
-    max_hp = monstre.get('max_hp', monstre.get('hp', 100))  # Utiliser max_hp ou hp comme fallback
-    monstre['hp'] = compute_hp(monstre['hp'] - dmg, max_hp)
+    dmg = compute_damage(champion['atk']*crit, monster['def'])
+    max_hp = monster.get('max_hp', monster.get('hp', 100))  # Utiliser max_hp ou hp comme fallback
+    monster['hp'] = compute_hp( monster['hp'] - dmg, max_hp)
 
     print(f"dmg infligé: {dmg}")
     time.sleep(1)
 
-def attaquer_monstre_to_champions(monstre, champion):
-    print(f"{monstre['name']} 🔄⚔️  {champion['name']} {champion['hp']}❤️!")
+def attack_monster_to_champions(monster, champion):
+    print(f"{monster['name']} 🔄⚔️  {champion['name']} {champion['hp']}❤️!")
 
     # Appliquer les dégâts et empêcher les HP négatifs
-    dmg = compute_damage(monstre['atk'], champion['def'])
+    dmg = compute_damage(monster['atk'], champion['def'])
     champion['hp'] = max(0, champion.get('hp', 0) - dmg)
 
     print(f"dmg infligé: {dmg}")
     time.sleep(1)
 
-def info_status(team, monstre, dead_list=None):
+def info_status(team, monster, dead_list=None):
 
     if dead_list is None:
         dead_list = []
@@ -58,6 +58,6 @@ def info_status(team, monstre, dead_list=None):
             print(f"{champ.get('name','?')}: 0 ❤️ ")
 
     print("--- Statut du monstre ---")
-    print(f"{monstre['name']}: {max(0, monstre.get('hp', 0))} ❤️")
+    print(f"{monster['name']}: {max(0, monster.get('hp', 0))} ❤️")
     print("="*50)
     time.sleep(1)

@@ -1,7 +1,4 @@
 from db import LoL
-import time
-
-# Afficher + choix des champions / monstres
 
 def print_champ(query):
     jeux = LoL.find(query)
@@ -14,16 +11,16 @@ def print_champ(query):
         crit = jeu.get('crit', 0)
         print(f"{i} : {name},  ⚔️ : {atk} , 🛡️ : {defense},  ❤️ : {hp},  💥 : {crit}")
     
-def afficher_monstres():
+def monstres():
     print_champ({"type": "monstre"})
 
-def afficher_champions():
+def display_champions():
     print_champ({"type": "champion"})
 
-def choisir_team():
+def choose_team():
     from db import LoL
     print("Choisissez votre équipe de 3 champions!")
-    afficher_champions()
+    display_champions()
 
     team = []
     while len(team) < 3:

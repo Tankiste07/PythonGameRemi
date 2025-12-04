@@ -5,10 +5,10 @@ def print_jolie():
     print("Bonus time !")
     print("="*50 + "\n")
 
-def nombre_aleatoire(x):
+def random_number(x):
     return random.randint(1, x)
 
-def valider_choix(max_index):
+def valid_choice(max_index):
 
     choix = input(" numéro : ")
 
