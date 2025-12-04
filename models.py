@@ -18,7 +18,7 @@ def display_champions():
     print_champ({"type": "champion"})
 
 def choose_team():
-    from db import LoL
+
     print("Choisissez votre équipe de 3 champions!")
     display_champions()
 
