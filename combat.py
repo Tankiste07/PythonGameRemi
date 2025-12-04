@@ -17,29 +17,6 @@ def compute_damage(atk,defense):
 def compute_hp(hp, max_hp):
     return min(max(0, hp), max_hp)
 
-def attack_champions_to_monster(champion, monster):
-    print("\n" + "-"*50)
-    print(f"{champion['name']} ⚔️  {monster['name']}  {monster['hp']}❤️! ")
-
-    # Appliquer les dégâts et empêcher les HP négatifs
-    crit = crit_attack(champion)
-    dmg = compute_damage(champion['atk']*crit, monster['def'])
-    max_hp = monster.get('max_hp', monster.get('hp', 100))
-    monster['hp'] = compute_hp( monster['hp'] - dmg, max_hp)
-
-    print(f"dmg infligé: {dmg}")
-    time.sleep(1)
-
-def attack_monster_to_champions(monster, champion):
-    print(f"{monster['name']} 🔄⚔️  {champion['name']} {champion['hp']}❤️!")
-
-    # Appliquer les dégâts et empêcher les HP négatifs
-    dmg = compute_damage(monster['atk'], champion['def'])
-    champion['hp'] = max(0, champion.get('hp', 0) - dmg)
-
-    print(f"dmg infligé: {dmg}")
-    time.sleep(1)
-
 def info_status(team, monster, dead_list=None):
 
     if dead_list is None:
@@ -61,3 +38,18 @@ def info_status(team, monster, dead_list=None):
     print(f"{monster['name']}: {max(0, monster.get('hp', 0))} ❤️")
     print("="*50)
     time.sleep(1)
+
+def attacker_to_defender(attacker, defender):
+
+    crit = crit_attack(attacker)
+    dmg = compute_damage(attacker['atk']*crit, defender['def'])
+    max_hp = defender.get('max_hp', defender.get('hp', 100))
+    defender['hp'] = compute_hp( defender['hp'] - dmg, max_hp)
+    
+    print("-"*15)
+    print(f"{attacker['name']} ⚔️  {defender['name']}  {defender['hp']}❤️! ")
+    print(f"dmg infligé: {dmg}")
+    time.sleep(1)
+
+
+#🔄

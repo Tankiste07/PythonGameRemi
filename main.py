@@ -34,9 +34,9 @@ if __name__ == "__main__":
 
         for champion in team:
             if champion['hp'] > 0 and monster['hp'] > 0:
-                attack_champions_to_monster(champion, monster)
+                attacker_to_defender(champion, monster)
                 if monster['hp'] > 0:
-                    attack_monster_to_champions(monster, champion)
+                    attacker_to_defender(monster, champion)
 
         # Déplacer les champions morts vers dead_list afin qu'ils puissent être ressuscités
         new_dead = [champ for champ in team if champ.get('hp', 0) <= 0]
