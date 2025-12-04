@@ -45,14 +45,14 @@ def info_status(team, monstre, dead_list=None):
     if dead_list is None:
         dead_list = []
 
-    print("\n" + "="*50)
+    print("="*50)
     print("--- Statut de l'équipe ---")
 
     for champ in team:
         print(f"{champ['name']}: {max(0, champ.get('hp', 0))} ❤️")
 
     if dead_list:
-        #afficher_mort(dead_list)
+
         print("--- Champions morts ---")
         for champ in dead_list:
             print(f"{champ.get('name','?')}: 0 ❤️ ")
