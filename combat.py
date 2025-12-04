@@ -24,7 +24,7 @@ def attack_champions_to_monster(champion, monster):
     # Appliquer les dégâts et empêcher les HP négatifs
     crit = crit_attack(champion)
     dmg = compute_damage(champion['atk']*crit, monster['def'])
-    max_hp = monster.get('max_hp', monster.get('hp', 100))  # Utiliser max_hp ou hp comme fallback
+    max_hp = monster.get('max_hp', monster.get('hp', 100)) 
     monster['hp'] = compute_hp( monster['hp'] - dmg, max_hp)
 
     print(f"dmg infligé: {dmg}")

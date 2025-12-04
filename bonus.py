@@ -55,7 +55,6 @@ def bonus_ad(team):
         for i, champ in enumerate(team):
             print(f"{i+1}. {champ['name']} ({champ['atk']}) ⚔️")
 
-        # choix = input(" numéro : ")
         idx = valid_choice(len(team))
         if idx is not None:
             team[idx]['atk'] += 5
@@ -74,7 +73,6 @@ def bonus_crit(team):
     for i, champ in enumerate(team):
         print(f"{i+1}. {champ['name']} ({champ['crit']}) 💥")
 
-    #choix = input(" numéro : ")
     idx = valid_choice(len(team))
     if idx is not None:
         team[idx]['crit'] += 0.15
@@ -95,11 +93,10 @@ def resurrect_from_dead(dead_list, team):
     for i, champ in enumerate(dead_list):
         print(f"{i+1}. {champ.get('name','?')} 0 ❤️")
     
+    # Comment ca peut ne pas etre valid ???
+    #      VVVVVVVVVVVV
     idx = valid_choice(len(dead_list))
-    if idx is not None:
-        cible = dead_list.pop(idx)
-        cible['hp'] = 50
-        team.append(cible)
-        print(f"{cible.get('name','?')} a été ressuscité avec 50 ❤️ !")
-    else:
-        print("Invalide.")
+    cible = dead_list.pop(idx)
+    cible['hp'] = 50
+    team.append(cible)
+    print(f"{cible.get('name','?')} a été ressuscité avec 50 ❤️ !")

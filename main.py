@@ -2,7 +2,7 @@ from db import LoL
 from models import choose_team
 from combat import *
 from bonus import bonus_hp, bonus_ad, bonus_armor, bonus_crit, resurrect_from_dead
-from score import enregistrer_et_afficher_scores
+from score import record_and_display_scores
 
 counter_wave = 0
 counter_tour = 0
@@ -77,5 +77,5 @@ if __name__ == "__main__":
 ⠀⠀⠀⠹⣿⣿⣶⣾⣿⣿⣿⠟⠁⠀⠸⢿⣿⠇⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 """)
-            enregistrer_et_afficher_scores(nom, counter_wave)
+            record_and_display_scores(nom, counter_wave, counter_tour)
             break

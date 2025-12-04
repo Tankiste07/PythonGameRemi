@@ -9,13 +9,11 @@ def random_number(x):
     return random.randint(1, x)
 
 def valid_choice(max_index):
-
-    choix = input(" numéro : ")
-
-    try:
-        choix = int(choix)
-        if 1 <= choix <= max_index:
-            return choix - 1
-    except ValueError:
-        pass
-    return None
+    while True:
+        choix = input(" numéro : ")
+        try:
+            choix = int(choix)
+            if 1 <= choix <= max_index:
+                return choix - 1
+        except ValueError:
+            print("Choix invalide")
