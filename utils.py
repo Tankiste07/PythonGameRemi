@@ -8,10 +8,12 @@ def print_jolie():
 def evenement_aleatoire(x):
     return random.randint(1, x)
 
-def valider_choix(choix_str, max_index):
+def valider_choix(max_index):
+
+    choix = input(" numéro : ")
 
     try:
-        choix = int(choix_str)
+        choix = int(choix)
         if 1 <= choix <= max_index:
             return choix - 1
     except ValueError:

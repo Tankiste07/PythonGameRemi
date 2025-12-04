@@ -11,8 +11,8 @@ def bonus_armor(team):
     for i, champ in enumerate(team):
         print(f"{i+1}. {champ['name']} ({champ['def']}) 🛡️")
 
-    choix = input(" numéro : ")
-    idx = valider_choix(choix, len(team))
+    # choix = input(" numéro : ")
+    idx = valider_choix(len(team))
     if idx is not None:
         team[idx]['def'] += armor
         print(f" {team[idx]['name']} gagne {armor} 🛡️ et possède :  {team[idx]['def']} 🛡️")
@@ -25,24 +25,22 @@ def bonus_hp(team):
 
     #si alea est egal a 2 toute l'équipe est soignée
     if alea % 2 == 1:
-
+        hp = random.randint(10, 50)
         print(f"Bonus de {hp} HP pour toute l'équipe !")
 
-        hp = random.randint(10, 50)
         for champ in team:
             champ['hp'] += hp
             print(f" {champ['name']} gagne {hp} ❤️ et possède :  {champ['hp']} ❤️")
 
     if alea % 2 == 0: 
-
+        hp = random.randint(5, 30)
         print(f"Bonus de {hp} HP !")
         
-        hp = random.randint(5, 30)
         for i, champ in enumerate(team):
             print(f"{i+1}. {champ['name']} ({champ['hp']}) ❤️")
 
-        choix = input(" numéro : ")
-        idx = valider_choix(choix, len(team))
+        #choix = input(" numéro : ")
+        idx = valider_choix(len(team))
         if idx is not None:
             team[idx]['hp'] += hp
             print(f" {team[idx]['name']} gagne {hp} ❤️ et possède :  {team[idx]['hp']} ❤️")
@@ -59,8 +57,8 @@ def bonus_ad(team):
         for i, champ in enumerate(team):
             print(f"{i+1}. {champ['name']} ({champ['atk']}) ⚔️")
 
-        choix = input(" numéro : ")
-        idx = valider_choix(choix, len(team))
+        # choix = input(" numéro : ")
+        idx = valider_choix(len(team))
         if idx is not None:
             team[idx]['atk'] += 5
             print(f" {team[idx]['name']} gagne 5 ⚔️ et possède :  {team[idx]['atk']} ⚔️")
@@ -78,8 +76,8 @@ def bonus_crit(team):
     for i, champ in enumerate(team):
         print(f"{i+1}. {champ['name']} ({champ['crit']}) 💥")
 
-    choix = input(" numéro : ")
-    idx = valider_choix(choix, len(team))
+    #choix = input(" numéro : ")
+    idx = valider_choix(len(team))
     if idx is not None:
         team[idx]['crit'] += 0.15
         print(f" {team[idx]['name']} gagne 0.15 💥 et possède :  {team[idx]['crit']} 💥")
@@ -99,8 +97,8 @@ def resurrect_from_dead(dead_list, team):
     for i, champ in enumerate(dead_list):
         print(f"{i+1}. {champ.get('name','?')} 0 ❤️")
     
-    choix = input(" numéro : ")
-    idx = valider_choix(choix, len(dead_list))
+    #choix = input(" numéro : ")
+    idx = valider_choix(len(dead_list))
     if idx is not None:
         cible = dead_list.pop(idx)
         cible['hp'] = 50
