@@ -47,13 +47,10 @@ def attacker_to_defender(attacker, defender):
     defender['hp'] = compute_hp( defender['hp'] - dmg, max_hp)
     
     print("-"*15)
-    # Afficher différemment selon qui attaque (champion ou monstre)
+
     if attacker.get('type') == 'monstre':
         print(f"{attacker['name']} 🔄⚔️  {defender['name']} {defender['hp']}❤️ !")
     else:
         print(f"{attacker['name']} ⚔️  {defender['name']}  {defender['hp']}❤️ !")
     print(f"dmg infligé: {dmg}")
     time.sleep(1)
-
-
-#

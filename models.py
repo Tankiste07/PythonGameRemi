@@ -55,34 +55,22 @@ def choose_team():
 
 def execute_turn_by_difficulty(game_difficulty, team, monster, counter_wave):
 
-    
-    # Convertir en int pour homogénéiser (0=Facile, 1=Normal, 2=Difficile)
     difficulty = int(game_difficulty)
     
-    # Mode Difficile (2)
     if difficulty == 2:
         monster['atk'] += counter_wave + 1
         monster['def'] += counter_wave + 1
         monster['hp'] += counter_wave + 1
+    elif difficulty == 1 or difficulty == 2:
         for champion in team:
             if champion['hp'] > 0 and monster['hp'] > 0:
                 attacker_to_defender(champion, monster)
                 if monster['hp'] > 0:
-                    attacker_to_defender(monster, champion)
-    
-    # Mode Normal (1)
-    elif difficulty == 1:
+                    attacker_to_defender(monster, champion)   
+    else:
         for champion in team:
             if champion['hp'] > 0 and monster['hp'] > 0:
                 attacker_to_defender(champion, monster)
-    
-    # Mode Facile (0)
-    elif difficulty == 0:
-        for champion in team:
-            if champion['hp'] > 0 and monster['hp'] > 0:
-                attacker_to_defender(champion, monster)
-        
-        # Le monstre attaque UN champion aléatoire encore en vie
         if monster['hp'] > 0:
             alive = [c for c in team if c.get('hp', 0) > 0]
             if alive:
