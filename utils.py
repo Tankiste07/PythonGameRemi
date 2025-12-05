@@ -1,4 +1,5 @@
 import random
+from db import LoL
 
 def print_jolie():
     print("\n" + "="*50)
@@ -17,3 +18,15 @@ def valid_choice(max_index):
                 return choix - 1
         except ValueError:
             print("Choix invalide")
+
+def monster_display():
+    
+        monster = LoL.aggregate([
+            {"$match": {"type": "monstre"}},
+            {"$sample": {"size": 1}}
+        ]).next()
+
+        print("-"*30)
+        print(f" {monster['name']} {monster['hp']} ❤️  apparaît !")
+        print("-"*30)
+        return monster

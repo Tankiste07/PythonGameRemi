@@ -47,8 +47,9 @@ def choose_team():
 
         team.append(champion)
         print(f"{champion['name']} ajouté !")
-
+    print("-"*30)
     print("Votre équipe :")
+    print("-"*30)
     for c in team:
         print(f"{c['name']}  ⚔️ {c['atk']}  🛡️ {c['def']} ❤️ {c['hp']}  💥  {c['crit']}")
     return team

@@ -3,7 +3,7 @@ from models import choose_team, execute_turn_by_difficulty
 from combat import *
 from bonus import bonus_is_comming, resurrect_from_dead
 from score import record_and_display_scores
-from utils import valid_choice
+from utils import valid_choice, monster_display
 
 counter_wave = 0
 counter_tour = 0
@@ -12,15 +12,16 @@ if __name__ == "__main__":
     nom = input("Entrez votre nom d'invocateur: ")
     team = choose_team()
     dead_list = []
+
+    print("-"*30)
     print("Vous pouvez jouer dans 3 modes différents : \n Facile (1), \n Normal (2), \n Difficile (3). \n Choisissez votre mode : ")
+
     game_difficulty = valid_choice(3)
 
-    monster = LoL.aggregate([
-        {"$match": {"type": "monstre"}},
-        {"$sample": {"size": 1}}
-    ]).next()
-
     while True:
+
+        monster = monster_display()
+
         if monster['hp'] <= 0:
             counter_wave += 1
 
@@ -30,10 +31,6 @@ if __name__ == "__main__":
             resurrect_from_dead(dead_list, team)
             bonus_is_comming(team)
 
-            monster = LoL.aggregate([
-                {"$match": {"type": "monstre"}},
-                {"$sample": {"size": 1}}
-            ]).next()
         
         # Exécuter le tour de combat selon la difficulté
         execute_turn_by_difficulty(game_difficulty, team, monster, counter_wave)
