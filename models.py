@@ -59,16 +59,20 @@ def execute_turn_by_difficulty(game_difficulty, team, monster, counter_wave):
     difficulty = int(game_difficulty)
     
     if difficulty == 2:
+
         monster['atk'] += counter_wave + 1
         monster['def'] += counter_wave + 1
         monster['hp'] += counter_wave + 1
+
     elif difficulty == 1 or difficulty == 2:
+
         for champion in team:
             if champion['hp'] > 0 and monster['hp'] > 0:
                 attacker_to_defender(champion, monster)
                 if monster['hp'] > 0:
                     attacker_to_defender(monster, champion)   
     else:
+        
         for champion in team:
             if champion['hp'] > 0 and monster['hp'] > 0:
                 attacker_to_defender(champion, monster)

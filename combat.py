@@ -1,12 +1,14 @@
 import math
 import random
 import time
+from utils import random_number
 
 def crit_attack(attacker):
+
     base_crit = attacker.get('crit', 0)
     crit_chance = min(base_crit * 10, 100)
-    roll = random.randint(1, 100)
-    if roll <= crit_chance:
+
+    if random_number(100) <= crit_chance:
         print(f"Coup critique de {attacker['name']}! 💥")
         return 2
     return 1

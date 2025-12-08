@@ -9,6 +9,7 @@ def record_and_display_scores(name, waves, tours=None):
 
     print("\nClassement des meilleurs scores :")
     print("Top 3 :")
+
     top_scores = score_board.find().sort(
         [("vagues_survecues", -1), ("tours", 1)]
     ).limit(3)

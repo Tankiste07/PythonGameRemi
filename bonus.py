@@ -5,7 +5,7 @@ from utils import valid_choice
 
 def bonus_armor(team):
 
-    armor = random.randint(1, 4)
+    armor = random_number(4)
     
     print_jolie()
     print(f"Bonus de {armor} 🛡️ !")
@@ -15,6 +15,7 @@ def bonus_armor(team):
 
     idx = valid_choice(len(team))
     team[idx]['def'] += armor
+
     print(f" {team[idx]['name']} gagne {armor} 🛡️ et possède :  {team[idx]['def']} 🛡️")
     print("Invalide.")
 
@@ -86,8 +87,6 @@ def resurrect_from_dead(dead_list, team):
     for i, champ in enumerate(dead_list):
         print(f"{i+1}. {champ.get('name','?')} 0 ❤️")
     
-    # Comment ca peut ne pas etre valid ???
-    #      VVVVVVVVVVVV
     idx = valid_choice(len(dead_list))
     cible = dead_list.pop(idx)
     cible['hp'] = 50
