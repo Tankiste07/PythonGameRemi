@@ -95,7 +95,7 @@ def resurrect_from_dead(dead_list, team):
 
 def bonus_is_comming(team):
     bonus_ad(team)
-    bonus_hp(team)
-    bonus_ad(team)
+    bonus_hp(team)    
     bonus_crit(team)
+    bonus_armor(team)
 

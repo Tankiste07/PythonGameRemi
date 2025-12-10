@@ -1,9 +1,7 @@
 from db import LoL
 from combat import attacker_to_defender
 import random
-from utils import valid_choice
-import random
-
+from utils import random_number
 
 def print_champ(query):
     jeux = LoL.find(query)
@@ -57,27 +55,25 @@ def choose_team():
 def execute_turn_by_difficulty(game_difficulty, team, monster, counter_wave):
 
     difficulty = int(game_difficulty)
-    
-    if difficulty == 2:
 
+    # Mode Difficile (2) : boost du monstre
+    if difficulty == 2:
         monster['atk'] += counter_wave + 1
         monster['def'] += counter_wave + 1
         monster['hp'] += counter_wave + 1
 
-    elif difficulty == 1 or difficulty == 2:
+    # Boucle principale : chaque champion attaque
+    for champion in team:
+        if champion.get('hp', 0) > 0 and monster.get('hp', 0) > 0:
+            attacker_to_defender(champion, monster)
+            # En Difficile, le monstre riposte immédiatement contre ce champion
+            if difficulty == 2 or difficulty == 1 and monster.get('hp', 0) > 0:
+                attacker_to_defender(monster, champion)
 
-        for champion in team:
-            if champion['hp'] > 0 and monster['hp'] > 0:
-                attacker_to_defender(champion, monster)
-                if monster['hp'] > 0:
-                    attacker_to_defender(monster, champion)   
-    else:
-        
-        for champion in team:
-            if champion['hp'] > 0 and monster['hp'] > 0:
-                attacker_to_defender(champion, monster)
-        if monster['hp'] > 0:
-            alive = [c for c in team if c.get('hp', 0) > 0]
-            if alive:
-                cible = random.choice(alive)
-                attacker_to_defender(monster, cible)
+    # En Facile, si le monstre est encore en vie il attaque un champion aléatoire
+    if difficulty == 0 and monster.get('hp', 0) > 0:
+        alive = [c for c in team if c.get('hp', 0) > 0]
+        if alive:
+            cible = random_number(len(alive)) - 1
+            cible = alive[cible]
+            attacker_to_defender(monster, cible)

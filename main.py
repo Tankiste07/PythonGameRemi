@@ -17,10 +17,11 @@ if __name__ == "__main__":
     print("Vous pouvez jouer dans 3 modes différents : \n Facile (1), \n Normal (2), \n Difficile (3). \n Choisissez votre mode : ")
 
     game_difficulty = valid_choice(3)
+    monster = monster_display()
 
     while True:
 
-        monster = monster_display()
+
 
         if monster['hp'] <= 0:
             counter_wave += 1
@@ -30,6 +31,7 @@ if __name__ == "__main__":
 
             resurrect_from_dead(dead_list, team)
             bonus_is_comming(team)
+            monster = monster_display()
 
         
         # Exécuter le tour de combat selon la difficulté
